@@ -14,11 +14,8 @@ RUN npm install
 #RUN npm install -D webpack-cli
 RUN npm install @babel/core @babel/preset-env @babel/preset-react babel-loader html-webpack-plugin style-loader css-loader webpack webpack-cli webpack-dev-server --save-dev
 
-
 # Copiar o restante do código da aplicação
 COPY . .
-
-
 
 # Expor a porta usada pela aplicação React
 EXPOSE 3000
