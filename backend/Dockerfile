@@ -6,8 +6,12 @@ FROM node:lts-buster-slim AS development
 WORKDIR /usr/src/app
 
 COPY package.json /usr/src/app/package.json
-COPY package-lock.json /usr/src/app/package-lock.json
-RUN npm ci
+#COPY package-lock.json /usr/src/app/package-lock.json
+#RUN npm ci
+# Install dependecies
+RUN npm set progress=false \
+    && npm config set depth 0 \
+    && npm i install
 
 COPY . /usr/src/app
 
