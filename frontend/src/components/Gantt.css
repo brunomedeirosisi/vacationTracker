@@ -1,3 +1,16 @@
-html, body, #root,#root div:only-child, .gantt-container {
+
+  html, body {
     height: 100%;
+    padding: 0px;
+    margin: 0px;
+    overflow: hidden;
+  }
+
+  .complex_gantt_bar {
+    background: transparent;
+    border: none;
+  }
+
+  .complex_gantt_bar .gantt_task_progress {
+    display: none;
   }

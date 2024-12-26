@@ -1,0 +1,604 @@
+openapi: 3.0.0
+info:
+  title: API de Gestão
+  description: API para gerenciar dedicações, funcionários, projetos e períodos de férias
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000/api
+paths:
+  /dedications:
+    post:
+      summary: Criar uma nova dedicação
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Dedication'
+      responses:
+        '201':
+          description: Dedicação criada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dedication'
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      summary: Listar todas as dedicações
+      responses:
+        '200':
+          description: Lista de dedicações
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Dedication'
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /dedications/{id}:
+    get:
+      summary: Buscar uma dedicação específica por ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID da dedicação
+      responses:
+        '200':
+          description: Dedicação encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dedication'
+        '404':
+          description: Dedicação não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Atualizar uma dedicação
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID da dedicação
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Dedication'
+      responses:
+        '200':
+          description: Dedicação atualizada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dedication'
+        '404':
+          description: Dedicação não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Deletar uma dedicação
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID da dedicação
+      responses:
+        '204':
+          description: Dedicação deletada com sucesso
+        '404':
+          description: Dedicação não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /employees:
+    post:
+      summary: Criar um novo funcionário
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Employee'
+      responses:
+        '201':
+          description: Funcionário criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      summary: Listar todos os funcionários
+      responses:
+        '200':
+          description: Lista de funcionários
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Employee'
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /employees/{id}:
+    get:
+      summary: Buscar um funcionário por ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID do funcionário
+      responses:
+        '200':
+          description: Funcionário encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+        '404':
+          description: Funcionário não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Atualizar um funcionário
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID do funcionário
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Employee'
+      responses:
+        '200':
+          description: Funcionário atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+        '404':
+          description: Funcionário não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Deletar um funcionário
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID do funcionário
+      responses:
+        '200':
+          description: Funcionário deletado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+        '404':
+          description: Funcionário não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /projects:
+    post:
+      summary: Criar um novo projeto
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+      responses:
+        '201':
+          description: Projeto criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      summary: Listar todos os projetos
+      responses:
+        '200':
+          description: Lista de projetos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /projects/{id}:
+    get:
+      summary: Buscar um projeto por ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID do projeto
+      responses:
+        '200':
+          description: Projeto encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '404':
+          description: Projeto não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Atualizar um projeto
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID do projeto
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+      responses:
+        '200':
+          description: Projeto atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '404':
+          description: Projeto não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Deletar um projeto
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID do projeto
+      responses:
+        '200':
+          description: Projeto deletado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+        '404':
+          description: Projeto não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /vacations:
+    post:
+      summary: Criar um novo período de férias
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Vacation'
+      responses:
+        '201':
+          description: Período de férias criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vacation'
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      summary: Listar todos os períodos de férias
+      responses:
+        '200':
+          description: Lista de períodos de férias
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Vacation'
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /vacations/{id}:
+    get:
+      summary: Buscar um período de férias por ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID do período de férias
+      responses:
+        '200':
+          description: Período de férias encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vacation'
+        '404':
+          description: Período de férias não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Atualizar um período de férias
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID do período de férias
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Vacation'
+      responses:
+        '200':
+          description: Período de férias atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vacation'
+        '404':
+          description: Período de férias não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Deletar um período de férias
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID do período de férias
+      responses:
+        '204':
+          description: Período de férias deletado com sucesso
+        '404':
+          description: Período de férias não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Dedication:
+      type: object
+      properties:
+        employee_name:
+          type: string
+        project:
+          type: string
+        initial_date_real:
+          type: string
+          format: date
+        final_date_real:
+          type: string
+          format: date
+        percentage:
+          type: number
+          format: float
+    Employee:
+      type: object
+      properties:
+        name:
+          type: string
+        role:
+          type: string
+        projects:
+          type: array
+          items:
+            type: object
+            properties:
+              project:
+                type: string
+              percentage:
+                type: number
+                format: float
+        vacations:
+          type: array
+          items:
+            type: object
+            properties:
+              start_date:
+                type: string
+                format: date
+              end_date:
+                type: string
+                format: date
+    Project:
+      type: object
+      properties:
+        project_name:
+          type: string
+        initial_date_estimated:
+          type: string
+          format: date
+        final_date_estimated:
+          type: string
+          format: date
+        initial_date_real:
+          type: string
+          format: date
+        final_date_real:
+          type: string
+          format: date
+    Vacation:
+      type: object
+      properties:
+        employee:
+          type: string
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+    Message:
+      type: object
+      properties:
+        message:
+          type: string

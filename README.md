@@ -33,3 +33,6 @@ Back-end
 ├── .env
 ├── .gitignore
 └── README.md
+
+https://docs.dhtmlx.com/gantt/samples/?sample=%2704_customization/11_split_task.html%27&filter=%27%27
+https://docs.dhtmlx.com/gantt/desktop__split_tasks.html

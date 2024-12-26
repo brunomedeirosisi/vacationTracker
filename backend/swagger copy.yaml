@@ -1,0 +1,157 @@
+openapi: 3.0.0
+info:
+  title: Dedication API
+  description: API para gerenciar dedicações
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000/api/dedications
+paths:
+  /:
+    post:
+      summary: Criar uma nova dedicação
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Dedication'
+      responses:
+        '201':
+          description: Dedicação criada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dedication'
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      summary: Listar todas as dedicações
+      responses:
+        '200':
+          description: Lista de dedicações
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Dedication'
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /{id}:
+    get:
+      summary: Buscar uma dedicação específica por ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID da dedicação
+      responses:
+        '200':
+          description: Dedicação encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dedication'
+        '404':
+          description: Dedicação não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Atualizar uma dedicação
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID da dedicação
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Dedication'
+      responses:
+        '200':
+          description: Dedicação atualizada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dedication'
+        '404':
+          description: Dedicação não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Deletar uma dedicação
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID da dedicação
+      responses:
+        '204':
+          description: Dedicação deletada com sucesso
+        '404':
+          description: Dedicação não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Dedication:
+      type: object
+      properties:
+        employee_name:
+          type: string
+        project:
+          type: string
+        initial_date_real:
+          type: string
+          format: date
+        final_date_real:
+          type: string
+          format: date
+        percentage:
+          type: number
+          format: float
+    Error:
+      type: object
+      properties:
+        error:
+          type: string

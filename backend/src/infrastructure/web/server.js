@@ -1,6 +1,7 @@
 const express = require('express');
 const swaggerUi = require('swagger-ui-express');
-const swaggerJSDoc = require('swagger-jsdoc');
+//const swaggerJSDoc = require('swagger-jsdoc');
+const YAML = require('yamljs');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const db = require('../database/mongoose');
@@ -20,6 +21,11 @@ db.connect(app);
 app.use(cors());
 app.use(express.json());
 
+// Carregar o arquivo de documentação Swagger em formato YAML
+const swaggerDocument = YAML.load('./swagger.yaml'); // Ajuste o caminho conforme necessário
+
+
+/*
 // Definindo as opções para o Swagger JSDoc
 const options = {
     definition: {
@@ -36,9 +42,10 @@ const options = {
 //, '../../domain/entities/*.js'
 // Inicializando o Swagger JSDoc
 const swaggerSpec = swaggerJSDoc(options);
-
+*/
 // Configurando o Swagger UI para servir a documentação
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+//app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Rotas
 app.use('/api/employee', employeeRoutes);
