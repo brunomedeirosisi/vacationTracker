@@ -1,5 +1,40 @@
+import React from "react";
+import Gantt from './components/Gantt';
 
-import React, { Component } from 'react';
+const App = () => {
+  const tasks = {
+    items: [
+      { id: 1, content: "03-04 -> 13-04 [10 dias]", start: "2025-04-03", end: "2025-04-13", group: 1, className: "manager-task" },
+      { id: 2, content: "14 dias", start: "2025-06-05", end: "2025-06-19", group: 1, className: "manager-task" },
+      { id: 3, content: "6 dias", start: "2025-10-08", end: "2025-10-14", group: 1, className: "manager-task" },
+
+      { id: 4, content: "10 dias", start: "2025-04-03", end: "2025-04-13", group: 2, className: "developer-task" },
+      { id: 5, content: "14 dias", start: "2025-06-05", end: "2025-06-19", group: 2 , className: "developer-task"},
+      { id: 6, content: "6 dias", start: "2025-10-08", end: "2025-10-14", group: 2 , className: "developer-task"},
+      { id: 7, content: "10 dias", start: "2025-05-03", end: "2025-05-13", group: 3 , className: "designer-task"},
+      { id: 8, content: "14 dias", start: "2025-07-05", end: "2025-07-19", group: 3 , className: "designer-task"},
+      { id: 9, content: "6 dias", start: "2025-11-08", end: "2025-11-14", group: 3 , className: "designer-task"}
+
+
+
+    ],
+    groups: [
+      { id: 1, content: "Bruno",value: 2 },  { id: 2, content: "Mapa" ,value: 1},  { id: 3, content: "Juliana",value: 1 }
+    ]
+  };
+
+  return (
+    <div style={{ height: "100vh", width: "100%" }}>
+      <h1>Projeto CEMIG</h1>
+      <Gantt tasks={tasks} />
+    </div>
+  );
+};
+
+export default App;
+
+
+/*import React, { Component } from 'react';
 import Gantt from './components/Gantt';
 import './components/Gantt.css';
 
@@ -39,6 +74,7 @@ class App extends Component {
     }
 }
 export default App;
+*/
 /*import React from "react";
 import axios from "axios";
 import "./App.scss";

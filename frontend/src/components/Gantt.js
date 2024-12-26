@@ -1,58 +1,53 @@
-import React, { Component } from 'react';
-import { gantt } from 'dhtmlx-gantt';
-import 'dhtmlx-gantt/codebase/dhtmlxgantt.css';
-import './Gantt.css';
+import React, { useEffect, useRef } from "react";
+import { Timeline } from "vis-timeline/standalone";
+import "vis-timeline/styles/vis-timeline-graph2d.min.css";
+import "./Gantt.css"; // Certifique-se de criar o CSS correspondente
 
-export default class Gantt extends Component {
-    componentDidMount() {
-        // Configurações iniciais do Gantt
-        gantt.plugins({
-            auto_scheduling: true
-        });
+const Gantt = ({ tasks }) => {
+  const timelineRef = useRef(null);
 
-        gantt.config.auto_types = true;
-        gantt.config.auto_scheduling = true;
-        gantt.config.auto_scheduling_compatibility = true;
+  useEffect(() => {
+    const container = timelineRef.current;
 
-        gantt.locale.labels.section_split = "Display";
-        gantt.config.lightbox.project_sections = [
-            { name: "description", height: 70, map_to: "text", type: "textarea", focus: true },
-            {
-                name: "split",
-                type: "checkbox",
-                map_to: "render",
-                options: [{ key: "split", label: "Split Task" }]
-            },
-            { name: "time", type: "duration", readonly: true, map_to: "auto" }
-        ];
-
-        // Inicializa o Gantt na div
-        gantt.init(this.ganttContainer);
-
-        // Carrega os dados passados via props
-        const { tasks } = this.props;
-        gantt.parse(tasks);
-    }
-
-    componentDidUpdate(prevProps) {
-        // Atualiza os dados do Gantt caso as props sejam alteradas
-        if (prevProps.tasks !== this.props.tasks) {
-            gantt.clearAll();
-            gantt.parse(this.props.tasks);
+    // Configuração da Timeline
+    const options = {
+      //stack: false,
+      groupOrder: "id",
+      editable: false,
+      start: "2025-01-01",
+      end: "2025-12-31",
+      orientation: { axis: "top" },
+      showCurrentTime: true,
+      zoomable: true,
+      horizontalScroll: true, // Habilita o scroll horizontal
+      timeAxis: {
+        scale: "week",
+        step: 1
+      }/*,
+      format: {
+        minorLabels: {
+          week: "w [W]WW" // Exibe as semanas com um formato específico
+        },
+        majorLabels: {
+          month: "MMMM YYYY"
         }
-    }
+      }*/
+    };
 
-    componentWillUnmount() {
-        // Remove event listeners e limpa recursos ao desmontar o componente
-        gantt.clearAll();
-    }
+    // Criação da timeline com itens e grupos
+    const timeline = new Timeline(container);
+    timeline.setOptions(options);
+    timeline.setGroups(tasks.groups);
+    timeline.setItems(tasks.items);
 
-    render() {
-        return (
-            <div
-                ref={(input) => { this.ganttContainer = input }}
-                style={{ width: '100%', height: '100%' }}
-            ></div>
-        );
-    }
-}
+    return () => {
+      timeline.destroy();
+    };
+  }, [tasks]);
+
+  return <div ref={timelineRef} style={{ width: "2560px", height: "300px", overflowX: "auto" }} />;
+
+  //return <div ref={timelineRef} style={{ width: "100%", height: "100%" }}></div>;
+};
+
+export default Gantt;
