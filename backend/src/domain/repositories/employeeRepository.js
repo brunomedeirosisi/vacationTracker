@@ -21,10 +21,16 @@ const deleteEmployee = async (id) => {
   return Employee.findByIdAndDelete(id);
 };
 
+const findEmployeesByProjectId = async (projectId) => {
+  // Find employees assigned to the specific project
+  return Employee.find({ 'projects.project': projectId }).populate('vacations');
+};
+
 module.exports = {
   createEmployee,
   findEmployeeById,
   listEmployees,
   updateEmployee,
   deleteEmployee,
+  findEmployeesByProjectId,
 };

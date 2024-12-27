@@ -45,7 +45,7 @@ const Gantt = ({ tasks }) => {
     };
   }, [tasks]);
 
-  return <div ref={timelineRef} style={{ width: "2560px", height: "300px", overflowX: "auto" }} />;
+  return <div ref={timelineRef} style={{ width: "2560px", height: "300px", overflowX: "auto" , marginBottom: "20px"}} />;
 
   //return <div ref={timelineRef} style={{ width: "100%", height: "100%" }}></div>;
 };

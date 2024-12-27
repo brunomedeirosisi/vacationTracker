@@ -6,7 +6,7 @@ const employeeRepository = require('../domain/repositories/employeeRepository');
  * @returns {Promise<Object>} - O funcionário criado.
  */
 async function createEmployee(employeeData) {
-  return await employeeRepository.create(employeeData);
+  return await employeeRepository.createEmployee(employeeData);
 }
 
 /**
@@ -14,7 +14,7 @@ async function createEmployee(employeeData) {
  * @returns {Promise<Array>} - Lista de funcionários.
  */
 async function listEmployees() {
-  return await employeeRepository.findAll();
+  return await employeeRepository.listEmployees();
 }
 
 /**
@@ -23,7 +23,7 @@ async function listEmployees() {
  * @returns {Promise<Object|null>} - O funcionário encontrado ou null.
  */
 async function getEmployeeById(id) {
-  return await employeeRepository.findById(id);
+  return await employeeRepository.findEmployeeById(id);
 }
 
 /**
@@ -33,7 +33,7 @@ async function getEmployeeById(id) {
  * @returns {Promise<Object|null>} - O funcionário atualizado ou null.
  */
 async function updateEmployee(id, updateData) {
-  return await employeeRepository.update(id, updateData);
+  return await employeeRepository.updateEmployee(id, updateData);
 }
 
 /**
@@ -42,7 +42,7 @@ async function updateEmployee(id, updateData) {
  * @returns {Promise<boolean>} - true se foi deletado, false caso contrário.
  */
 async function deleteEmployee(id) {
-  return await employeeRepository.delete(id);
+  return await employeeRepository.deleteEmployee(id);
 }
 
 module.exports = {

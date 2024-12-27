@@ -6,6 +6,57 @@ info:
 servers:
   - url: http://localhost:3000/api
 paths:
+  /projects-with-details:
+    get:
+      summary: Retrieve all projects with groups and vacations
+      description: Returns a list of all projects, where each project contains a list of dedicated workers (groups) and their vacation periods (items).
+      tags:
+        - Projects
+      responses:
+        200:
+          description: A list of projects with detailed groups and vacation items.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProjectWithDetails'
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /dedications-with-details:
+    get:
+      summary: Retrieve all dedications with groups and items
+      description: Returns a list of all dedications, organized into items (dedications) and groups (workers with dedications).
+      tags:
+        - Dedications
+      responses:
+        200:
+          description: A list of dedications with detailed groups and items.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  groups:
+                    type: array
+                    description: A list of workers with dedications
+                    items:
+                      $ref: '#/components/schemas/Group'
+                  items:
+                    type: array
+                    description: A list of dedications for the workers in the projects
+                    items:
+                      $ref: '#/components/schemas/DedicationItem'
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /dedications:
     post:
       summary: Criar uma nova dedicação
@@ -520,6 +571,98 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+
+
+    DedicationItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the dedication within the request
+          example: 9
+        content:
+          type: string
+          description: Project name and percentage dedication
+          example: Project Name - 30%
+        start:
+          type: string
+          format: date
+          description: Start date of the dedication
+          example: 2025-11-08
+        end:
+          type: string
+          format: date
+          description: End date of the dedication
+          example: 2025-11-14
+        group:
+          type: integer
+          description: The ID of the group (worker) associated with this dedication
+          example: 3
+    ProjectWithDetails:
+        type: object
+        properties:
+          project_name:
+            type: string
+            description: The name of the project
+            example: Project A
+          groups:
+            type: array
+            description: A list of workers dedicated to the project
+            items:
+              $ref: '#/components/schemas/Group'
+          items:
+            type: array
+            description: A list of vacation periods for the workers in the project
+            items:
+              $ref: '#/components/schemas/VacationItem'
+    Group:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the group within the request
+          example: 1
+        content:
+          type: string
+          description: Name of the worker
+          example: Bruno
+    VacationItem:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the vacation item within the request
+          example: vacation-0-0
+        content:
+          type: string
+          description: The duration of the vacation in days
+          example: 6 days
+        start:
+          type: string
+          format: date
+          description: Start date of the vacation
+          example: 2025-11-08
+        end:
+          type: string
+          format: date
+          description: End date of the vacation
+          example: 2025-11-14
+        group:
+          type: integer
+          description: The ID of the group (worker) associated with this vacation
+          example: 1
+        className:
+          type: string
+          description: The CSS class name for the vacation, used in UI rendering
+          example: designer task
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: A description of the error
+          example: Internal server error
     Dedication:
       type: object
       properties:
@@ -602,3 +745,6 @@ components:
       properties:
         message:
           type: string
+
+
+

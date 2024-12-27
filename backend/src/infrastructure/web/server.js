@@ -48,7 +48,7 @@ const swaggerSpec = swaggerJSDoc(options);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Rotas
-app.use('/api/employee', employeeRoutes);
+app.use('/api/employees', employeeRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/dedications', dedicationRoutes);
 app.use('/api/vacations', vacationRoutes);

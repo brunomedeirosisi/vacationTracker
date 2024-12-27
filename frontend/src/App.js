@@ -1,4 +1,44 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Gantt from './components/Gantt';
+
+export default function App() {
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await fetch("http://backend:3000/api/projects-with-details");
+        const data = await response.json();
+        setProjects(data);
+      } catch (error) {
+        console.error("Error fetching projects:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, []);
+
+  if (loading) {
+    return <div>Loading timelines...</div>;
+  }
+
+  return (
+    <div>
+      {projects.map((project, index) => (
+        <div key={index} style={{ marginBottom: "40px" }}>
+          <h2>{project.project_name}</h2>
+          <Gantt tasks={project} />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+
+/*import React from "react";
 import Gantt from './components/Gantt';
 
 const App = () => {
@@ -33,7 +73,7 @@ const App = () => {
 
 export default App;
 
-
+*/
 /*import React, { Component } from 'react';
 import Gantt from './components/Gantt';
 import './components/Gantt.css';

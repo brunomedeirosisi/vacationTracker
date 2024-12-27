@@ -45,10 +45,51 @@ async function deleteDedication(id) {
   return await dedicationRepository.delete(id);
 }
 
+async function getDedicationsWithDetails() {
+  // Fetch all dedications
+  const dedications = await dedicationRepository.findAll();
+
+  // Fetch all employees
+  const employees = await employeeRepository.listEmployees();
+
+  // Map employees into "groups" format
+  const groups = employees.map((employee, index) => {
+    // Get the unique number of projects they are part of
+    const uniqueProjects = new Set(
+      dedications
+        .filter((dedication) => dedication.employee_name === employee.name)
+        .map((dedication) => dedication.project)
+    );
+
+    return {
+      id: index + 1, // Unique ID for this request
+      content: employee.name,
+      value: uniqueProjects.size, // Count of unique projects
+    };
+  });
+
+  // Map dedications into "items" format
+  const items = dedications.map((dedication, index) => {
+    // Find the worker's group ID based on the name
+    const group = groups.find((group) => group.content === dedication.employee_name)?.id;
+
+    return {
+      id: index + 1, // Unique ID for this request
+      content: `${dedication.project} - ${dedication.percentage}%`,
+      start: dedication.initial_date_real,
+      end: dedication.final_date_real,
+      group, // Link to the worker's group ID
+    };
+  });
+
+  return { groups, items };
+}
+
 module.exports = {
   createDedication,
   listDedications,
   getDedicationById,
   updateDedication,
   deleteDedication,
+  getDedicationsWithDetails,
 };

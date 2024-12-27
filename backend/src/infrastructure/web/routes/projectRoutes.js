@@ -65,4 +65,14 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+// Nova rota para listar projetos com detalhes (grupos e período de férias)
+router.get('/projects-with-details', async (req, res) => {
+  try {
+    const projectsWithDetails = await projectService.getProjectsWithDetails();
+    res.status(200).json(projectsWithDetails);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 module.exports = router;
