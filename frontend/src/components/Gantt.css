@@ -19,17 +19,17 @@
 .vis-time-axis .vis-labelset .vis-label:nth-child(3) {
   color: #43a047; /* Verde para linha superior */
 }
-.developer-task {
+.developer {
   background-color: #007bff; /* Azul para Desenvolvedores */
   color: white;
 }
 
-.designer-task {
+.designer {
   background-color: #28a745; /* Verde para Designers */
   color: white;
 }
 
-.manager-task {
+.manager {
   background-color: #ffc107; /* Amarelo para Gerentes */
   color: black;
 }

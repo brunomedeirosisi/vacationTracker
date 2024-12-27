@@ -1,5 +1,6 @@
 const projectRepository = require('../domain/repositories/projectRepository');
-
+const dedicationRepository = require('../domain/repositories/dedicationRepository');
+const employeeRepository = require('../domain/repositories/employeeRepository');
 /**
  * Cria um novo projeto.
  * @param {Object} projectData - Dados do projeto.
@@ -48,21 +49,39 @@ async function deleteProject(id) {
 async function getProjectsWithDetails() {
   // Fetch all projects
   const projects = await projectRepository.listProjects();
-
+  
+  // Verificar se `projects` é um array
+  if (!Array.isArray(projects) || projects.length === 0) {
+    return []; // Retorna um array vazio se não houver projetos
+  }
   // Create JSON structure for each project
   const projectsWithDetails = await Promise.all(
     projects.map(async (project) => {
+
+      // Garantir que o `project` possui a propriedade `project_name`
+    if (!project || !project.project_name) {
+      return null; // Ignorar projetos inválidos
+    }
+      // Buscar dedicações relacionadas ao projeto pelo nome
+    const dedications = await dedicationRepository.findByProjectName(project.project_name);
+
+    // Extrair os nomes dos colaboradores das dedicações
+    const employees = Array.isArray(dedications)
+    ? dedications.map((dedication) => dedication.employee_name)
+    : [];
+
       // Get all employees dedicated to this project
-      const employees = await employeeRepository.findEmployeesByProjectId(project._id);
+      //const employees = await vacationRepository.findEmployeesByProjectId(project._id);
 
       // Map employees to "groups" format
       const groups = employees.map((employee, index) => ({
-        id: index + 1, // Unique ID for this request
-        content: employee.name,
+        id: index + 1, 
+        content: employee
       }));
 
-      // Map vacations to "items" format
-      const items = employees.flatMap((employee, groupIndex) =>
+      const employeeEntities = await getEmployeeEntities(employees);
+
+      const items = employeeEntities.flatMap((employee, groupIndex) =>
         employee.vacations.map((vacation, vacationIndex) => ({
           id: `vacation-${groupIndex}-${vacationIndex}`, // Unique ID for this request
           content: `${Math.ceil(
@@ -71,7 +90,7 @@ async function getProjectsWithDetails() {
           start: vacation.start_date,
           end: vacation.end_date,
           group: groupIndex + 1, // Link to the group ID
-          className: 'designer task', // Example className
+          className: employee.role, // Example className
         }))
       );
 
@@ -85,7 +104,14 @@ async function getProjectsWithDetails() {
 
   return projectsWithDetails;
 }
-
+const getEmployeeEntities = async (employeeNames) => {
+  const employeeEntities = [];
+  for (const name of employeeNames) {
+    const employees = await employeeRepository.findByName(name);
+    employeeEntities.push(...employees);
+  }
+  return employeeEntities;
+};
 module.exports = {
   createProject,
   listProjects,

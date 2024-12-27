@@ -6,7 +6,7 @@ info:
 servers:
   - url: http://localhost:3000/api
 paths:
-  /projects-with-details:
+  /projects/projects-with-details:
     get:
       summary: Retrieve all projects with groups and vacations
       description: Returns a list of all projects, where each project contains a list of dedicated workers (groups) and their vacation periods (items).
@@ -27,7 +27,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /dedications-with-details:
+  /dedications/dedications-with-details:
     get:
       summary: Retrieve all dedications with groups and items
       description: Returns a list of all dedications, organized into items (dedications) and groups (workers with dedications).
@@ -686,16 +686,6 @@ components:
           type: string
         role:
           type: string
-        projects:
-          type: array
-          items:
-            type: object
-            properties:
-              project:
-                type: string
-              percentage:
-                type: number
-                format: float
         vacations:
           type: array
           items:

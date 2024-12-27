@@ -10,7 +10,7 @@ const findProjectById = async (id) => {
 };
 
 const listProjects = async () => {
-  return Project.find();
+  return Project.find({});
 };
 
 const updateProject = async (id, updateData) => {

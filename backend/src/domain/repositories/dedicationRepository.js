@@ -47,10 +47,20 @@ async function deleteById(id) {
   return result !== null;
 }
 
+/**
+ * Busca dedicações por nome de projeto.
+ * @param {string} projectName - Nome do projeto.
+ * @returns {Promise<Array>} - Lista de dedicações para o projeto.
+ */
+async function findByProjectName(projectName) {
+  return await Dedication.find({ project: projectName });
+}
+
 module.exports = {
   create,
   findAll,
   findById,
   update,
   delete: deleteById,
+  findByProjectName,
 };

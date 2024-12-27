@@ -6,11 +6,11 @@ const createEmployee = async (employeeData) => {
 };
 
 const findEmployeeById = async (id) => {
-  return Employee.findById(id).populate('projects.project vacations');
+  return Employee.findById(id);
 };
 
 const listEmployees = async () => {
-  return Employee.find().populate('projects.project vacations');
+  return Employee.find();
 };
 
 const updateEmployee = async (id, updateData) => {
@@ -21,10 +21,15 @@ const deleteEmployee = async (id) => {
   return Employee.findByIdAndDelete(id);
 };
 
+const findByName = async (employeeName) => {
+  return Employee.find({ name: employeeName });
+};
+
+/*
 const findEmployeesByProjectId = async (projectId) => {
   // Find employees assigned to the specific project
-  return Employee.find({ 'projects.project': projectId }).populate('vacations');
-};
+  return Employee.find({ 'projects.project': projectId });
+};*/
 
 module.exports = {
   createEmployee,
@@ -32,5 +37,6 @@ module.exports = {
   listEmployees,
   updateEmployee,
   deleteEmployee,
-  findEmployeesByProjectId,
+  findByName,
+  //findEmployeesByProjectId,
 };

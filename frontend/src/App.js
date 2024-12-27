@@ -8,8 +8,9 @@ export default function App() {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await fetch("http://backend:3000/api/projects-with-details");
+        const response = await fetch("http://localhost:3333/api/projects/projects-with-details");
         const data = await response.json();
+        console.log(data)
         setProjects(data);
       } catch (error) {
         console.error("Error fetching projects:", error);
