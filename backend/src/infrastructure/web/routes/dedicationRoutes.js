@@ -2,6 +2,17 @@ const express = require('express');
 const router = express.Router();
 const dedicationService = require('../../../services/dedicationService');
 
+
+
+//  rota para listar dedicações com detalhes (grupos e itens)
+router.get('/dedications-with-details', async (req, res) => {
+  try {
+    const dedicationsWithDetails = await dedicationService.getDedicationsWithDetails();
+    res.status(200).json(dedicationsWithDetails);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 // Criar uma nova dedicação
 router.post('/', async (req, res) => {
   try {
@@ -64,14 +75,6 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-// Nova rota para listar dedicações com detalhes (grupos e itens)
-router.get('/dedications-with-details', async (req, res) => {
-  try {
-    const dedicationsWithDetails = await dedicationService.getDedicationsWithDetails();
-    res.status(200).json(dedicationsWithDetails);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+
 
 module.exports = router;

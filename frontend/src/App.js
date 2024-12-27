@@ -1,4 +1,189 @@
 import React, { useEffect, useState } from "react";
+import Gantt from "./components/Gantt";
+
+export default function App() {
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [activeTracker, setActiveTracker] = useState("VacationTracker");
+
+  const fetchProjects = async (tracker) => {
+    setLoading(true);
+    try {
+      const endpoint =
+        tracker === "VacationTracker"
+          ? "http://localhost:3333/api/projects/projects-with-details"
+          : "http://localhost:3333/api/dedications/dedications-with-details";
+
+      const response = await fetch(endpoint);
+      const data = await response.json();
+
+      if (Array.isArray(data)) {
+        setProjects(data);
+      } else {
+        console.error("Unexpected data format from API:", data);
+        setProjects([]);
+      }
+    } catch (error) {
+      console.error("Error fetching projects:", error);
+      setProjects([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProjects(activeTracker);
+  }, [activeTracker]);
+
+  const handleTrackerChange = (tracker) => {
+    setActiveTracker(tracker);
+  };
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  return (
+    <div>
+      <div style={{ display: "flex", justifyContent: "center", marginBottom: "20px" }}>
+        <button
+          onClick={() => handleTrackerChange("VacationTracker")}
+          style={{
+            padding: "10px 20px",
+            marginRight: "10px",
+            backgroundColor: activeTracker === "VacationTracker" ? "#007bff" : "#f0f0f0",
+            color: activeTracker === "VacationTracker" ? "#fff" : "#000",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer",
+          }}
+        >
+          VacationTracker
+        </button>
+        <button
+          onClick={() => handleTrackerChange("AllocationTracker")}
+          style={{
+            padding: "10px 20px",
+            backgroundColor: activeTracker === "AllocationTracker" ? "#007bff" : "#f0f0f0",
+            color: activeTracker === "AllocationTracker" ? "#fff" : "#000",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer",
+          }}
+        >
+          AllocationTracker
+        </button>
+      </div>
+
+      {projects.length > 0 ? (
+        projects.map((project) => (
+          <div key={project.project_name} style={{ marginBottom: "40px" }}>
+            <h2 style={{ textAlign: "center" }}>{project.project_name}</h2>
+            <Gantt tasks={project} />
+          </div>
+        ))
+      ) : (
+        <p>No data available for the selected tracker.</p>
+      )}
+    </div>
+  );
+}
+/*
+import React, { useEffect, useState } from "react";
+import Gantt from "./components/Gantt";
+
+export default function App() {
+  const [activeTab, setActiveTab] = useState("vacationTracker"); // Tracks the selected tab
+  const [data, setData] = useState([]); // Holds the fetched data
+  const [loading, setLoading] = useState(true); // Loading state
+
+  // URLs for the two trackers
+  const dataSources = {
+    vacationTracker: "http://localhost:3333/api/projects/projects-with-details",
+    allocationTracker: "http://localhost:3333/api/dedications/dedications-with-details",
+  };
+
+  // Fetch data based on active tab
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(dataSources[activeTab]);
+        const result = await response.json();
+        console.log(result);
+        setData(result);
+      } catch (error) {
+        console.error(`Error fetching data for ${activeTab}:`, error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [activeTab]); // Re-run effect when `activeTab` changes
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <div>
+      //{ Tab Navigation }
+      <div style={styles.tabContainer}>
+        <button
+          style={activeTab === "vacationTracker" ? styles.activeTab : styles.tab}
+          onClick={() => setActiveTab("vacationTracker")}
+        >
+          Vacation Tracker
+        </button>
+        <button
+          style={activeTab === "allocationTracker" ? styles.activeTab : styles.tab}
+          onClick={() => setActiveTab("allocationTracker")}
+        >
+          Allocation Tracker
+        </button>
+      </div>
+
+      //{ Gantt Component }
+      <div style={styles.content}>
+        <Gantt tasks={data} /> //{ Pass the fetched data to the Gantt component }
+      </div>
+    </div>
+  );
+}
+
+// Simple styles for the tabs and content
+const styles = {
+  tabContainer: {
+    display: "flex",
+    justifyContent: "center",
+    marginBottom: "20px",
+  },
+  tab: {
+    padding: "10px 20px",
+    margin: "0 5px",
+    cursor: "pointer",
+    backgroundColor: "#f0f0f0",
+    border: "1px solid #ccc",
+    borderRadius: "5px",
+  },
+  activeTab: {
+    padding: "10px 20px",
+    margin: "0 5px",
+    cursor: "pointer",
+    backgroundColor: "#007bff",
+    color: "#fff",
+    border: "1px solid #007bff",
+    borderRadius: "5px",
+  },
+  content: {
+    padding: "20px",
+  },
+};
+*/
+/*
+
+import React, { useEffect, useState } from "react";
 import Gantt from './components/Gantt';
 
 export default function App() {
@@ -8,7 +193,7 @@ export default function App() {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await fetch("http://localhost:3333/api/projects/projects-with-details");
+        const response = await fetch("http://localhost:3333/api/dedications/dedications-with-details");
         const data = await response.json();
         console.log(data)
         setProjects(data);
@@ -38,7 +223,7 @@ export default function App() {
   );
 }
 
-
+*/
 /*import React from "react";
 import Gantt from './components/Gantt';
 

@@ -1,5 +1,5 @@
 const dedicationRepository = require('../domain/repositories/dedicationRepository');
-
+const employeeRepository = require('../domain/repositories/employeeRepository');
 /**
  * Cria uma nova dedicação.
  * @param {Object} dedicationData - Dados da dedicação.
@@ -82,7 +82,7 @@ async function getDedicationsWithDetails() {
     };
   });
 
-  return { groups, items };
+  return [{ project_name: "Team Allocation",groups, items }];
 }
 
 module.exports = {
